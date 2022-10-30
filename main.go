@@ -9,21 +9,21 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/probr/probr-pack-wireframe/internal/config"
-	"github.com/probr/probr-pack-wireframe/internal/summary"
-	"github.com/probr/probr-pack-wireframe/pack"
+	"github.com/privateerproj/privateer-pack-wireframe/internal/config"
+	"github.com/privateerproj/privateer-pack-wireframe/internal/summary"
+	"github.com/privateerproj/privateer-pack-wireframe/pack"
 
-	audit "github.com/probr/probr-sdk/audit"
-	sdkConfig "github.com/probr/probr-sdk/config"
-	"github.com/probr/probr-sdk/plugin"
-	probeengine "github.com/probr/probr-sdk/probeengine"
-	"github.com/probr/probr-sdk/utils"
+	audit "github.com/privateerproj/privateer-sdk/audit"
+	sdkConfig "github.com/privateerproj/privateer-sdk/config"
+	"github.com/privateerproj/privateer-sdk/plugin"
+	probeengine "github.com/privateerproj/privateer-sdk/probeengine"
+	"github.com/privateerproj/privateer-sdk/utils"
 )
 
 var (
-	// ServicePackName is the name for the service pack
+	// RaidName is the name for the service pack
 	// TODO: Return binary name instead? Or add this to the interface to use instead of the binary name?
-	ServicePackName = "Wireframe"
+	RaidName = "Wireframe"
 
 	// Version is the main version number that is being run at the moment
 	Version = "0.1.0"
@@ -43,13 +43,13 @@ var (
 	BuiltAt = ""
 )
 
-// ServicePack ...
-type ServicePack struct {
+// Raid ...
+type Raid struct {
 }
 
-// RunProbes is required to meet the Probr Service Pack interface
-func (sp *ServicePack) RunProbes() error {
-	return ProbrCoreLogic()
+// Start is required to meet the Privateer Service Pack interface
+func (sp *Raid) Start() error {
+	return PrivateerCoreLogic()
 }
 
 // main is executed when this file is called as a binary or `go run`
@@ -59,11 +59,11 @@ func main() {
 }
 
 func setFlags() (versionCmd, runCmd *flag.FlagSet) {
-	// > probr version [-v]
+	// > privateer version [-v]
 	versionCmd = flag.NewFlagSet("version", flag.ExitOnError)
-	config.Vars.Verbose = *versionCmd.Bool("v", false, "Display extended version information") // TODO: Harness '-v' in the standard probr execution
+	config.Vars.Verbose = *versionCmd.Bool("v", false, "Display extended version information") // TODO: Harness '-v' in the standard privateer execution
 
-	// > probr
+	// > privateer
 	runCmd = flag.NewFlagSet("run", flag.ExitOnError)
 	runCmd.StringVar(&config.Vars.VarsFile, "varsfile", "", "path to config file")
 	return
@@ -82,16 +82,16 @@ func handleCommands(versionCmd, runCmd *flag.FlagSet) {
 	case "debug": // Same cli args as run. Use this to bypass plugin and execute directly for debugging
 		// Parse cli args
 		runCmd.Parse(os.Args[2:]) // Skip first arg as it will be 'debug'
-		ProbrCoreLogic()
+		PrivateerCoreLogic()
 
 	default:
 		// Parse cli args
 		runCmd.Parse(os.Args[1:])
 
 		// Serve plugin
-		spProbr := &ServicePack{}
+		raid := &Raid{}
 		serveOpts := &plugin.ServeOpts{
-			Pack: spProbr,
+			Pack: raid,
 		}
 
 		plugin.Serve(serveOpts)
@@ -114,22 +114,22 @@ func setupCloseHandler() {
 	}()
 }
 
-// ProbrCoreLogic ...
-func ProbrCoreLogic() (err error) {
+// PrivateerCoreLogic ...
+func PrivateerCoreLogic() (err error) {
 	defer sdkConfig.GlobalConfig.CleanupTmp()
 	setupCloseHandler() // Sigterm protection
 
 	config.Vars.Init()
-	summary.State = audit.NewSummaryState(ServicePackName)
+	summary.State = audit.NewSummaryState(RaidName)
 
-	store := probeengine.NewProbeStore(ServicePackName, config.Vars.Tags(), &summary.State)
+	store := probeengine.NewProbeStore(RaidName, config.Vars.Tags(), &summary.State)
 	s, err := store.RunAllProbes(pack.GetProbes())
 	if err != nil {
 		log.Printf("[ERROR] Error executing tests %v", err)
 		return
 	}
 	log.Printf("[INFO] Overall test completion status: %v", s)
-	summary.State.SetProbrStatus()
+	summary.State.SetPrivateerStatus()
 
 	summary.State.PrintSummary()
 	summary.State.WriteSummary()
@@ -143,7 +143,7 @@ func ProbrCoreLogic() (err error) {
 func printVersion(w io.Writer) {
 
 	if config.Vars.Verbose {
-		fmt.Fprintf(w, "Service Pack : %s", ServicePackName)
+		fmt.Fprintf(w, "Service Pack : %s", RaidName)
 		fmt.Fprintln(w)
 		fmt.Fprintf(w, "Version      : %s", getVersion())
 		fmt.Fprintln(w)

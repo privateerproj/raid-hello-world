@@ -1,9 +1,9 @@
 package config
 
 type varOptions struct {
-	VarsFile     string       // Required to initialize the sdk global config object
-	Verbose      bool         // Recommended for flag handling
-	ServicePacks servicePacks `yaml:"ServicePacks"` // Optional
+	VarsFile string       // Required to initialize the sdk global config object
+	Verbose  bool         // Recommended for flag handling
+	Raids    servicePacks `yaml:"Raids"` // Optional
 }
 
 // servicePacks is only required if this pack accepts custom vars

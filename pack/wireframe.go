@@ -2,8 +2,8 @@ package pack
 
 import (
 	"github.com/markbates/pkger"
-	"github.com/probr/probr-pack-wireframe/internal/welcome"
-	"github.com/probr/probr-sdk/probeengine"
+	"github.com/privateerproj/privateer-pack-wireframe/internal/welcome"
+	"github.com/privateerproj/privateer-sdk/probeengine"
 )
 
 // GetProbes returns a list of probe objects

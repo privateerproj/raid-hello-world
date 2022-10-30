@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"log"
 
-	sdkConfig "github.com/probr/probr-sdk/config"
-	"github.com/probr/probr-sdk/config/setter"
-	"github.com/probr/probr-sdk/utils"
+	sdkConfig "github.com/privateerproj/privateer-sdk/config"
+	"github.com/privateerproj/privateer-sdk/config/setter"
+	"github.com/privateerproj/privateer-sdk/utils"
 )
 
 // Vars is a stateful object containing the variables required to execute this pack
@@ -27,7 +27,7 @@ func (ctx *varOptions) Init() (err error) {
 	sdkConfig.GlobalConfig.Init()
 	sdkConfig.GlobalConfig.PrepareOutputDirectory("audit", "cucumber")
 
-	ctx.ServicePacks.Wireframe.setEnvAndDefaults()
+	ctx.Raids.Wireframe.setEnvAndDefaults()
 
 	log.Printf("[DEBUG] Config initialized by %s", utils.CallerName(1))
 	return
@@ -35,7 +35,7 @@ func (ctx *varOptions) Init() (err error) {
 
 // decode uses an SDK helper to create a YAML file decoder,
 // parse the file to an object, then extracts the values from
-// ServicePacks.Wireframe into this context
+// Raids.Wireframe into this context
 func (ctx *varOptions) decode() (err error) {
 	configDecoder, file, err := sdkConfig.NewConfigDecoder(ctx.VarsFile)
 	if err != nil {
@@ -53,7 +53,7 @@ func (ctx *varOptions) LogConfigState() {
 }
 
 func (ctx *varOptions) Tags() string {
-	return sdkConfig.ParseTags(ctx.ServicePacks.Wireframe.TagInclusions, ctx.ServicePacks.Wireframe.TagExclusions)
+	return sdkConfig.ParseTags(ctx.Raids.Wireframe.TagInclusions, ctx.Raids.Wireframe.TagExclusions)
 }
 
 // setEnvOrDefaults will set value from os.Getenv and default to the specified value

@@ -1,4 +1,4 @@
-# Contributing to Probr
+# Contributing to Privateer
 
 We'd love to accept your patches and contributions to this project. There are just a few small guidelines you need to follow.
 
@@ -8,7 +8,7 @@ Participation in this project comes under the [Contributor Covenant Code of Cond
 
 ## Code Submission
 
-Thank you for considering submitting code to Probr!
+Thank you for considering submitting code to Privateer!
 
 - We follow the [GitHub Pull Request Model](https://help.github.com/articles/about-pull-requests/) for all contributions.
 - For large bodies of work, we recommend creating an issue using the "Feature Request" template to outline the feature that you wish to build, and describe how it will be implemented. This gives a chance for review to happen early, and ensures no wasted effort occurs.
@@ -36,8 +36,8 @@ When submitting pull requests, make sure to do the following:
 
 ## Continuous Integration
 
-Probr uses Github Actions for all CI tasks. You may review the existing workflows in `.github/workflows`. Results of checks will automatically be pushed to PRs and may block merging if checks fail.
+Privateer uses Github Actions for all CI tasks. You may review the existing workflows in `.github/workflows`. Results of checks will automatically be pushed to PRs and may block merging if checks fail.
 
 ## Logging
 
-Probr is extremely dependent on clean and clear logs for its success. Please follow the [Log Filter Guidelines](internal/config/README.md) to add useful logs to your code.
+Privateer is extremely dependent on clean and clear logs for its success. Please follow the [Log Filter Guidelines](internal/config/README.md) to add useful logs to your code.

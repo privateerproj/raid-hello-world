@@ -4,11 +4,11 @@ package welcome
 import (
 	"github.com/cucumber/godog"
 
-	"github.com/probr/probr-pack-wireframe/internal/config"
-	"github.com/probr/probr-pack-wireframe/internal/summary"
-	audit "github.com/probr/probr-sdk/audit"
-	"github.com/probr/probr-sdk/probeengine"
-	"github.com/probr/probr-sdk/utils"
+	"github.com/privateerproj/privateer-pack-wireframe/internal/config"
+	"github.com/privateerproj/privateer-pack-wireframe/internal/summary"
+	audit "github.com/privateerproj/privateer-sdk/audit"
+	"github.com/privateerproj/privateer-sdk/probeengine"
+	"github.com/privateerproj/privateer-sdk/utils"
 )
 
 type probeStruct struct{}
@@ -40,11 +40,11 @@ func (scenario *scenarioState) testShouldRun() error {
 	payload = struct {
 		TestShouldPass string
 	}{
-		config.Vars.ServicePacks.Wireframe.Pass,
+		config.Vars.Raids.Wireframe.Pass,
 	}
 
-	if config.Vars.ServicePacks.Wireframe.Pass == "false" {
-		err = utils.ReformatError("Config state ServicePacks.Wireframe.Pass was false")
+	if config.Vars.Raids.Wireframe.Pass == "false" {
+		err = utils.ReformatError("Config state Raids.Wireframe.Pass was false")
 	}
 
 	return err
@@ -108,7 +108,7 @@ func (probe probeStruct) Name() string {
 	// The return value for `Name` should match the probe directory
 	// and it's feature file, so each may be properly addressed for
 	// packing and opening the files.
-	return "wireframe"
+	return "welcome"
 }
 
 // Path presents the path of these feature files for external reference

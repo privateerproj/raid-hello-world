@@ -246,10 +246,10 @@ node_modules
 # VS Code debugger
 __debug_bin
 
-# probr misc ('probr' is Linux exe)
-probr_output
+# privateer misc ('privateer' is Linux exe)
+privateer_output
 !examples/*
-probr
+privateer
 static-content/
 .kube/
 config.yml
