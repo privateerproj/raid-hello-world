@@ -10,13 +10,11 @@ import (
 	"syscall"
 
 	"github.com/privateerproj/privateer-pack-wireframe/internal/config"
-	"github.com/privateerproj/privateer-pack-wireframe/internal/summary"
 	"github.com/privateerproj/privateer-pack-wireframe/pack"
+	"github.com/privateerproj/privateer-sdk/raidengine"
 
-	audit "github.com/privateerproj/privateer-sdk/audit"
 	sdkConfig "github.com/privateerproj/privateer-sdk/config"
 	"github.com/privateerproj/privateer-sdk/plugin"
-	probeengine "github.com/privateerproj/privateer-sdk/probeengine"
 	"github.com/privateerproj/privateer-sdk/utils"
 )
 
@@ -91,7 +89,7 @@ func handleCommands(versionCmd, runCmd *flag.FlagSet) {
 		// Serve plugin
 		raid := &Raid{}
 		serveOpts := &plugin.ServeOpts{
-			Pack: raid,
+			Plugin: raid,
 		}
 
 		plugin.Serve(serveOpts)
@@ -103,7 +101,7 @@ func handleCommands(versionCmd, runCmd *flag.FlagSet) {
 // our clean up procedure and exiting the program.
 // Ref: https://golangcode.com/handle-ctrl-c-exit-in-terminal/
 func setupCloseHandler() {
-	c := make(chan os.Signal)
+	c := make(chan os.Signal, 1)
 	signal.Notify(c, os.Interrupt, syscall.SIGTERM)
 	go func() {
 		<-c
@@ -120,23 +118,18 @@ func PrivateerCoreLogic() (err error) {
 	setupCloseHandler() // Sigterm protection
 
 	config.Vars.Init()
-	summary.State = audit.NewSummaryState(RaidName)
 
-	store := probeengine.NewProbeStore(RaidName, config.Vars.Tags(), &summary.State)
-	s, err := store.RunAllProbes(pack.GetProbes())
-	if err != nil {
-		log.Printf("[ERROR] Error executing tests %v", err)
-		return
+	raids := pack.Policies["CIS"] // TODO: add a func to get a list of raids from the config & consolidate the attacks
+
+	errors := raidengine.Run(raids) // TODO handle these errors
+
+	output := fmt.Sprintf("%v/%v attacks succeeded. View the output logs for more details.", len(raids)-len(errors), len(raids))
+	log.Print(output)
+
+	if errors != nil {
+		return utils.ReformatError("Error executing tests %v", err)
 	}
-	log.Printf("[INFO] Overall test completion status: %v", s)
-	summary.State.SetPrivateerStatus()
 
-	summary.State.PrintSummary()
-	summary.State.WriteSummary()
-
-	if summary.State.ProbesFailed > 0 {
-		return utils.ReformatError("One or more probe scenarios were not successful. View the output logs for more details.")
-	}
 	return
 }
 

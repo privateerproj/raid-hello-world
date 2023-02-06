@@ -14,6 +14,7 @@ type servicePacks struct {
 // wireframe defines the custom vars for this service pack
 type wireframe struct {
 	Pass          string   `yaml:"Pass"`
+	JokeName      string   `yaml:"JokeName"`
 	TagInclusions []string `yaml:"TagInclusions"`
 	TagExclusions []string `yaml:"TagExclusions"`
 }

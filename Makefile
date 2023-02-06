@@ -4,9 +4,9 @@ BUILD_WIN=@env GOOS=windows GOARCH=amd64 go build -o $(PACKNAME).exe
 BUILD_LINUX=@env GOOS=linux GOARCH=amd64 go build -o $(PACKNAME)
 BUILD_MAC=@env GOOS=darwin GOARCH=amd64 go build -o $(PACKNAME)-darwin
 
-release: go-package go-release pkgr-clean
-release-candidate: go-package go-release-candidate pkgr-clean
-binary: go-package go-build pkgr-clean
+release: go-package go-release
+release-candidate: go-package go-release-candidate
+binary: go-package go-build
 
 go-release: release-nix release-win release-mac
 
@@ -16,11 +16,6 @@ go-build:
 
 go-package: go-tidy go-test
 	@echo "  >  Packaging static files..."
-	@pkger
-
-pkgr-clean:
-	@echo "  >  Removing pkged.go to avoid accidental re-use of old files..."
-	@rm pkged.go
 
 go-test:
 	@echo "  >  Validating code ..."

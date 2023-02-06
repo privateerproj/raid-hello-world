@@ -133,7 +133,7 @@ func (probe probeStruct) ScenarioInitialize(ctx *godog.ScenarioContext) {
 	ctx.BeforeScenario(func(s *godog.Scenario) {
 		scenario.name = s.Name
 		scenario.probe = summary.State.GetProbeLog(probe.Name())
-		scenario.audit = summary.State.GetProbeLog(probe.Name()).InitializeAuditor(s.Name, s.Tags)
+		// scenario.audit = summary.State.GetProbeLog(probe.Name()).InitializeAuditor(s.Name, s.Tags)
 		probeengine.LogScenarioStart(s)
 	})
 

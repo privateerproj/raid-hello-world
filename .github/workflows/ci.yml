@@ -19,7 +19,6 @@ jobs:
             go mod download
             go get -u golang.org/x/lint/golint
             go get -t .
-            go get github.com/markbates/pkger/cmd/pkger
     
     - name: Lint
       run: |
@@ -36,5 +35,4 @@ jobs:
 
     - name: Build
       run: |
-            pkger
             go build -o wireframe

@@ -25,7 +25,6 @@ func (ctx *varOptions) Init() (err error) {
 	}
 	sdkConfig.GlobalConfig.VarsFile = ctx.VarsFile
 	sdkConfig.GlobalConfig.Init()
-	sdkConfig.GlobalConfig.PrepareOutputDirectory("audit", "cucumber")
 
 	ctx.Raids.Wireframe.setEnvAndDefaults()
 
@@ -63,5 +62,6 @@ func (ctx *wireframe) setEnvAndDefaults() {
 	// 2. Name of env var to check
 	// 3. Default value to set if flags, vars file, and env have not provided a value
 
-	setter.SetVar(&ctx.Pass, "PROBR_PASS_WIREFRAME_TESTS", "false")
+	setter.SetVar(&ctx.Pass, "PVTR_WIREFRAME_PASS_TESTS", "false")
+	setter.SetVar(&ctx.JokeName, "PVTR_WIREFRAME_JOKE_NAME", "")
 }
