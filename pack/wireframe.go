@@ -9,8 +9,14 @@ func GetProbes() []raidengine.Strike {
 	return Policies["PCI"]
 }
 
+// TODO: is this the best way to handle this?
 // Policies contains a list of different functions to run for each policy type
 var Policies = map[string][]raidengine.Strike{
-	"PCI": []raidengine.Strike{KnockKnock},
-	"CIS": []raidengine.Strike{KnockKnock, ChickenCrossedRoad},
+	"PCI": {
+		KnockKnock,
+	},
+	"CIS": {
+		KnockKnock,
+		ChickenCrossedRoad,
+	},
 }
