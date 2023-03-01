@@ -27,17 +27,13 @@ var (
 			command.InitializeConfig()
 		},
 		Run: func(cmd *cobra.Command, args []string) {
-			if len(os.Args) > 1 && os.Args[1] == "debug" {
-				raidengine.Run("Wireframe", pack.Policies)
-			} else {
-				// Serve plugin
-				raid := &Raid{}
-				serveOpts := &plugin.ServeOpts{
-					Plugin: raid,
-				}
-
-				plugin.Serve(serveOpts)
+			// Serve plugin
+			raid := &Raid{}
+			serveOpts := &plugin.ServeOpts{
+				Plugin: raid,
 			}
+
+			plugin.Serve(serveOpts)
 		},
 	}
 )
@@ -67,5 +63,5 @@ type Raid struct {
 // Start is called from Privateer after the plugin is served
 func (sp *Raid) Start() error {
 	// raidengine.SetupCloseHandler(sigtermProtection)
-	return raidengine.Run(RaidName, pack.Policies) // TODO handle these errors
+	return raidengine.Run(RaidName, pack.Strikes) // TODO handle these errors
 }

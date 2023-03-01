@@ -13,7 +13,7 @@ var (
 		Use:   "debug",
 		Short: "A brief description of your application",
 		Run: func(cmd *cobra.Command, args []string) {
-			raidengine.Run("Wireframe", pack.Policies)
+			raidengine.Run("Wireframe", pack.Strikes)
 		},
 	}
 )

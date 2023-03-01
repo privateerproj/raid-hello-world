@@ -1,7 +1,7 @@
 package pack
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/hashicorp/go-hclog"
 	"github.com/privateerproj/privateer-sdk/logging"
@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-var logger hclog.Logger // enables formatted logging (logger.Trace, etc)
+var logger hclog.Logger // enables formatted logging (log.Printf("[TRACE] , etc)
 
 // KnockKnock is a demo test for dev purposes
 func KnockKnock() error {
@@ -17,15 +17,15 @@ func KnockKnock() error {
 	if err != nil {
 		return err
 	}
-	logger.Info("Me: Knock Knock")
-	logger.Info(fmt.Sprintf("%s: Who's There?", name))
+	log.Printf("[INFO] Me: Knock Knock")
+	log.Printf("[INFO] %s: Who's There?", name)
 	// Demo the log timestamp
 	for i := 1; i < 5000000; i++ {
 		if i%500000 == 0 {
-			logger.Trace(fmt.Sprintf("Me: (stares at %s)", name))
+			log.Printf("[TRACE] Me: (stares at %s)", name)
 		}
 	}
-	logger.Error(fmt.Sprintf("%s: (lost interest and left)", name))
+	log.Printf("%s: (lost interest and left)", name)
 	return nil
 }
 
@@ -35,13 +35,11 @@ func ChickenCrossedRoad() error {
 	if err != nil {
 		return err
 	}
-	logger.Warn("Me: This joke may offend someone.")
-	logger.Info("Me: Why did the chicken cross the road?")
-	logger.Debug("Me: Although, wait, there is something else you should know")
-	logger.Trace(fmt.Sprintf(
-		"Me: (looks to see what %s's expression is)", name))
-	logger.Error(fmt.Sprintf(
-		"%s: I'm busy, leave me alone.", name))
+	logger.Warn("[Warn!] Me: This joke may offend someone.")
+	logger.Info("[Info!] Me: Why did the chicken cross the road?")
+	log.Print("[TRACE] Me: Although, wait, there is something else you should know")
+	log.Printf("[TRACE] Me: (looks to see what %s's expression is)", name)
+	log.Printf("%s: I'm busy, leave me alone.", name)
 	return nil
 }
 
