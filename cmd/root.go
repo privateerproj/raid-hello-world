@@ -12,17 +12,17 @@ import (
 )
 
 var (
+	// Build information is added by the Makefile at compile time
 	buildVersion       string
 	buildGitCommitHash string
 	buildTime          string
 
-	// RaidName is the name of this raid
-	RaidName = "Wireframe"
+	RaidName = "Wireframe" // TODO: Change this to the name of your Raid
 
 	// runCmd represents the base command when called without any subcommands
 	runCmd = &cobra.Command{
 		Use:   RaidName,
-		Short: "A brief description of your application",
+		Short: "TODO: Addd a brief description of your Raid here",
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			command.InitializeConfig()
 		},
@@ -57,11 +57,10 @@ func init() {
 
 // Raid meets the Privateer Service Pack interface
 type Raid struct {
-	RaidName string
 }
 
 // Start is called from Privateer after the plugin is served
-func (sp *Raid) Start() error {
+func (r *Raid) Start() error {
 	// raidengine.SetupCloseHandler(sigtermProtection)
-	return raidengine.Run(RaidName, pack.Strikes) // TODO handle these errors
+	return raidengine.Run(pack.Strikes) // Return errors from strike executions
 }
