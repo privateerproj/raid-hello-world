@@ -1,0 +1,5 @@
+loglevel: Debug
+WriteDirectory: test_output
+raids:
+  Wireframe:
+    tactic: CIS

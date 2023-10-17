@@ -4,6 +4,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/privateerproj/privateer-sdk/command"
 	"github.com/privateerproj/privateer-sdk/plugin"
@@ -54,6 +55,7 @@ func Execute(version, commitHash, builtAt string) {
 
 func init() {
 	command.SetBase(runCmd) // This initializes the base CLI functionality
+	viper.BindPFlag("raids.wireframe.tactic", runCmd.PersistentFlags().Lookup("tactic"))
 }
 
 // Raid meets the Privateer Service Pack interface
@@ -70,7 +72,7 @@ func cleanupFunc() error {
 // Adding raidengine.SetupCloseHandler(cleanupFunc) will allow you to append custom cleanup behavior
 func (r *Raid) Start() error {
 	raidengine.SetupCloseHandler(cleanupFunc)
-	return raidengine.Run(RaidName, getStrikes()) // Return errors from strike executions
+	return raidengine.Run(RaidName, viper.GetString("tactic"), getStrikes()) // Return errors from strike executions
 }
 
 // GetStrikes returns a list of probe objects
