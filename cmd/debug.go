@@ -1,7 +1,10 @@
 package cmd
 
 import (
+	"log"
+
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 
 	"github.com/privateerproj/privateer-sdk/raidengine"
 )
@@ -12,7 +15,10 @@ var (
 		Use:   "debug",
 		Short: "Run the Raid in debug mode",
 		Run: func(cmd *cobra.Command, args []string) {
-			raidengine.Run(RaidName, getStrikes())
+			err := raidengine.Run(RaidName, viper.GetString("raids.wireframe.tactic"), getStrikes())
+			if err != nil {
+				log.Fatal(err)
+			}
 		},
 	}
 )
