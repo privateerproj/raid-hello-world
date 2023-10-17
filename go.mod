@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/hashicorp/go-hclog v1.2.0
-	github.com/privateerproj/privateer-sdk v0.0.0
+	github.com/privateerproj/privateer-sdk v0.0.2-rc
 	github.com/spf13/cobra v1.4.0
 	github.com/spf13/viper v1.15.0
 )

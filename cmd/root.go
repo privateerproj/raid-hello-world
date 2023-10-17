@@ -5,10 +5,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/privateerproj/privateer-pack-wireframe/pack"
 	"github.com/privateerproj/privateer-sdk/command"
 	"github.com/privateerproj/privateer-sdk/plugin"
 	"github.com/privateerproj/privateer-sdk/raidengine"
+
+	"github.com/privateerproj/privateer-pack-wireframe/strikes"
 )
 
 var (
@@ -33,7 +34,7 @@ var (
 				Plugin: raid,
 			}
 
-			plugin.Serve(serveOpts)
+			plugin.Serve(RaidName, serveOpts)
 		},
 	}
 )
@@ -52,15 +53,39 @@ func Execute(version, commitHash, builtAt string) {
 }
 
 func init() {
-	command.SetBase(runCmd)
+	command.SetBase(runCmd) // This initializes the base CLI functionality
 }
 
 // Raid meets the Privateer Service Pack interface
 type Raid struct {
 }
 
+// cleanupFunc is called when the plugin is stopped
+func cleanupFunc() error {
+	return nil
+}
+
 // Start is called from Privateer after the plugin is served
+// At minimum, this should call raidengine.Run()
+// Adding raidengine.SetupCloseHandler(cleanupFunc) will allow you to append custom cleanup behavior
 func (r *Raid) Start() error {
-	// raidengine.SetupCloseHandler(sigtermProtection)
-	return raidengine.Run(pack.Strikes) // Return errors from strike executions
+	raidengine.SetupCloseHandler(cleanupFunc)
+	return raidengine.Run(RaidName, getStrikes()) // Return errors from strike executions
+}
+
+// GetStrikes returns a list of probe objects
+func getStrikes() map[string][]raidengine.Strike {
+	logger := raidengine.GetLogger(RaidName, false)
+	a := &strikes.Antijokes{
+		Log: logger,
+	}
+	return map[string][]raidengine.Strike{
+		"PCI": {
+			a.KnockKnock,
+		},
+		"CIS": {
+			a.KnockKnock,
+			a.ChickenCrossedRoad,
+		},
+	}
 }
