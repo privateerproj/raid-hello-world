@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -72,17 +73,17 @@ func cleanupFunc() error {
 // Adding raidengine.SetupCloseHandler(cleanupFunc) will allow you to append custom cleanup behavior
 func (r *Raid) Start() error {
 	raidengine.SetupCloseHandler(cleanupFunc)
-	return raidengine.Run(RaidName, viper.GetString("tactic"), getStrikes()) // Return errors from strike executions
+	return raidengine.Run(RaidName, getStrikes()) // Return errors from strike executions
 }
 
 // GetStrikes returns a list of probe objects
-func getStrikes() map[string][]raidengine.Strike {
+func getStrikes() []raidengine.Strike {
 	logger := raidengine.GetLogger(RaidName, false)
 	a := &strikes.Antijokes{
 		Log: logger,
 	}
-	return map[string][]raidengine.Strike{
-		"PCI": {
+	availableStrikes := map[string][]raidengine.Strike{
+		"CCC-Taxonomy": {
 			a.KnockKnock,
 		},
 		"CIS": {
@@ -90,4 +91,11 @@ func getStrikes() map[string][]raidengine.Strike {
 			a.ChickenCrossedRoad,
 		},
 	}
+	tactic := viper.GetString("raids.wireframe.tactic")
+	strikes := availableStrikes[tactic]
+	if len(strikes) == 0 {
+		message := fmt.Sprintf("No strikes were found for the provided strike set: %s", tactic)
+		logger.Error(message)
+	}
+	return strikes
 }
