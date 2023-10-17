@@ -1,4 +1,4 @@
-module github.com/privateerproj/privateer-pack-wireframe
+module github.com/privateerproj/raid-wireframe
 
 go 1.14
 
