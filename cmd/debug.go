@@ -3,9 +3,8 @@ package cmd
 import (
 	"log"
 
-	"github.com/spf13/cobra"
-
 	"github.com/privateerproj/privateer-sdk/raidengine"
+	"github.com/spf13/cobra"
 )
 
 var (
@@ -14,7 +13,7 @@ var (
 		Use:   "debug",
 		Short: "Run the Raid in debug mode",
 		Run: func(cmd *cobra.Command, args []string) {
-			err := raidengine.Run(RaidName, getStrikes())
+			err := raidengine.Run(RaidName, AvailableStrikes, Strikes)
 			if err != nil {
 				log.Fatal(err)
 			}

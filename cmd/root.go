@@ -1,17 +1,14 @@
 package cmd
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 
+	"github.com/privateerproj/privateer-pack-wireframe/strikes"
 	"github.com/privateerproj/privateer-sdk/command"
 	"github.com/privateerproj/privateer-sdk/plugin"
 	"github.com/privateerproj/privateer-sdk/raidengine"
-
-	"github.com/privateerproj/privateer-pack-wireframe/strikes"
 )
 
 var (
@@ -21,6 +18,20 @@ var (
 	buildTime          string
 
 	RaidName = "Wireframe" // TODO: Change this to the name of your Raid
+	Strikes  = &strikes.Antijokes{}
+
+	AvailableStrikes = map[string][]raidengine.Strike{
+		"CCC-Taxonomy": {
+			Strikes.KnockKnock,
+			Strikes.ChickenCrossedRoad,
+		},
+		"CCC-Hardening": {
+			Strikes.ChickenCrossedRoad,
+		},
+		"CIS": {
+			Strikes.ChickenCrossedRoad,
+		},
+	}
 
 	// runCmd represents the base command when called without any subcommands
 	runCmd = &cobra.Command{
@@ -56,7 +67,6 @@ func Execute(version, commitHash, builtAt string) {
 
 func init() {
 	command.SetBase(runCmd) // This initializes the base CLI functionality
-	viper.BindPFlag("raids.wireframe.tactic", runCmd.PersistentFlags().Lookup("tactic"))
 }
 
 // Raid meets the Privateer Service Pack interface
@@ -73,29 +83,5 @@ func cleanupFunc() error {
 // Adding raidengine.SetupCloseHandler(cleanupFunc) will allow you to append custom cleanup behavior
 func (r *Raid) Start() error {
 	raidengine.SetupCloseHandler(cleanupFunc)
-	return raidengine.Run(RaidName, getStrikes()) // Return errors from strike executions
-}
-
-// GetStrikes returns a list of probe objects
-func getStrikes() []raidengine.Strike {
-	logger := raidengine.GetLogger(RaidName, false)
-	a := &strikes.Antijokes{
-		Log: logger,
-	}
-	availableStrikes := map[string][]raidengine.Strike{
-		"CCC-Taxonomy": {
-			a.KnockKnock,
-		},
-		"CIS": {
-			a.KnockKnock,
-			a.ChickenCrossedRoad,
-		},
-	}
-	tactic := viper.GetString("raids.wireframe.tactic")
-	strikes := availableStrikes[tactic]
-	if len(strikes) == 0 {
-		message := fmt.Sprintf("No strikes were found for the provided strike set: %s", tactic)
-		logger.Error(message)
-	}
-	return strikes
+	return raidengine.Run(RaidName, AvailableStrikes, Strikes)
 }
