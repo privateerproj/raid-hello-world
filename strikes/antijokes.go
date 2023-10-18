@@ -1,7 +1,6 @@
 package strikes
 
 import (
-	"errors"
 	"fmt"
 	"log"
 
@@ -9,60 +8,145 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/privateerproj/privateer-sdk/raidengine"
+	"github.com/privateerproj/privateer-sdk/utils"
 )
 
 type Antijokes struct {
-	Log hclog.Logger
+	Log     hclog.Logger                       // Recommended, allows you to set the log level for each log message
+	Results map[string]raidengine.StrikeResult // Optional, allows cross referencing between strikes
+}
+
+func (a *Antijokes) SetLogger(loggerName string) {
+	a.Log = raidengine.GetLogger(loggerName, false)
 }
 
 // KnockKnock is a demo test for dev purposes
 func (a *Antijokes) KnockKnock() (strikeName string, result raidengine.StrikeResult) {
 	strikeName = "Knock Knock"
+	log.Print(strikeName) // Default logs will be set as INFO
+
 	result = raidengine.StrikeResult{
-		Passed:  false,
-		Message: "",
-		DocsURL: "",
+		Passed:      false,
+		Description: "This is a failure of a joke for dev purposes",
+		Message:     "Strike has not yet started.",
+		DocsURL:     "https://maintainer.com/docs/raids/wireframe",
+		ControlID:   "CCC-Taxonomy-1",
+		Movements:   make(map[string]raidengine.MovementResult),
 	}
-	log.Printf("Knock Knock")
-	name, err := getJokeName()
-	if err != nil {
+
+	// run getJokerName() as a movement
+	jokerNameMovement := getJokerName()
+	result.Movements["JokerName"] = jokerNameMovement
+	if !jokerNameMovement.Passed {
+		result.Message = jokerNameMovement.Message
 		return
 	}
-	log.Printf("Me: Knock Knock")
-	log.Printf(fmt.Sprintf("%s: Who's There?", name))
-	// Demo the log timestamp
-	for i := 1; i < 5000000; i++ {
-		if i%500000 == 0 {
-			log.Printf("Me: (stares at %s)", name)
-		}
+
+	// run getJokeeName() as a movement
+	jokeeNameMovement := getJokeeName()
+	result.Movements["JokeeName"] = jokeeNameMovement
+	if !jokeeNameMovement.Passed {
+		result.Message = jokeeNameMovement.Message
+		return
 	}
-	log.Printf(fmt.Sprintf("%s: (lost interest and left)", name))
+
+	// Run multiple movements at once by passing the result object as a pointer
+	// Previous movement values must be cast to their type from interface{} before being used again
+	RunKnockKnock(jokerNameMovement.Value.(string), jokeeNameMovement.Value.(string), &result)
 	return
 }
 
 // ChickenCrossedRoad is a demo test for dev purposes
 func (a *Antijokes) ChickenCrossedRoad() (strikeName string, result raidengine.StrikeResult) {
+	// If a strike is part of multiple tactics, you can use a map to reference the control ID to the selected tactic
+	controlIDs := map[string]string{
+		"CCC-Taxonomy":  "CCC-Taxonomy-2",
+		"CCC-Hardening": "CCC-Hardening-1",
+		"CIS":           "CIS-1",
+	}
 	strikeName = "Chicken Crossed Road"
 	result = raidengine.StrikeResult{
-		Passed:  true,
-		Message: "",
-		DocsURL: "",
+		Passed:      false,
+		Description: "This is a demo strike for dev purposes",
+		Message:     "Strike has not yet started.",
+		DocsURL:     "https://maintainer.com/docs/raids/wireframe",
+		ControlID:   controlIDs[viper.GetString("raids.wireframe.tactic")],
+		Movements:   make(map[string]raidengine.MovementResult),
 	}
 
-	name, err := getJokeName()
-	if err != nil {
+	jokerNameMovement := getJokerName()
+	result.Movements["JokerName"] = jokerNameMovement
+	if !jokerNameMovement.Passed {
+		result.Message = jokerNameMovement.Message
 		return
 	}
-	a.Log.Warn("Me: This joke may offend someone.")
-	a.Log.Info("Me: Why did the chicken cross the road?")
-	a.Log.Trace(fmt.Sprintf("Me: (looks to see what %s's expression is)", name))
-	a.Log.Info(fmt.Sprintf("%s: I'm busy, leave me alone.", name))
+
+	// Using an hclog logger will allow you to set the log level for each message
+	a.Log.Warn(fmt.Sprintf("%s: This joke may offend someone.", jokerNameMovement.Value))
+	a.Log.Info(fmt.Sprintf("%s: Why did the chicken cross the road?", jokerNameMovement.Value))
+	a.Log.Trace(fmt.Sprintf("%s: (looks to see what the stranger's expression is)", jokerNameMovement.Value))
+	a.Log.Info("Stranger: I'm busy, leave me alone.")
+
+	result.Passed = true
+	result.Message = "We tried, and that's all we really came here for."
 	return
 }
 
-func getJokeName() (string, error) {
-	if viper.IsSet("raids.wireframe.jokename") {
-		return viper.GetString("raids.wireframe.jokename"), nil
+// getJokerName is a common movement for the strikes in this raid
+func getJokerName() (result raidengine.MovementResult) {
+	result = raidengine.MovementResult{
+		Description: "JokerName must be found in the runtime configuration.",
+		Function:    utils.CallerPath(0),
 	}
-	return "", errors.New("JokeName must be set in the config file or env vars (PVTR_WIREFRAME_JOKE_NAME)")
+	if viper.IsSet("raids.wireframe.JokerName") {
+		result.Passed = true
+		result.Message = "JokerName is set"
+		result.Value = viper.GetString("raids.wireframe.JokerName")
+	} else {
+		result.Passed = false
+		result.Message = "JokerName must be set in the configuration."
+	}
+	return
+}
+
+// getJokerName is a common movement for the strikes in this raid
+func getJokeeName() (result raidengine.MovementResult) {
+	result = raidengine.MovementResult{
+		Description: "JokeeName must be found in the runtime configuration.",
+		Function:    utils.CallerPath(0),
+	}
+	if viper.IsSet("raids.wireframe.JokeeName") {
+		result.Passed = true
+		result.Message = "JokeeName is set"
+		result.Value = viper.GetString("raids.wireframe.JokeeName")
+	} else {
+		result.Passed = false
+		result.Message = "JokeeName must be set in the configuration."
+	}
+	return
+}
+
+// RunKnockKnock is a set of movements for the Knock Knock strike, with each movement being added to the provided result
+func RunKnockKnock(jokerName, jokeeName string, result *raidengine.StrikeResult) {
+	// say knock knock
+	result.Movements["knock knock"] = raidengine.MovementResult{
+		Passed:      true,
+		Description: "Joke must be started by the joker.",
+		Message:     fmt.Sprintf("%s: Knock knock.", jokerName),
+		Function:    utils.CallerPath(0),
+	}
+	// say who's there
+	result.Movements["who's there"] = raidengine.MovementResult{
+		Passed:      true,
+		Description: "Jokee must respond with 'who's there?'",
+		Message:     fmt.Sprintf("%s: Who's there?", jokeeName),
+		Function:    utils.CallerPath(0),
+	}
+	// say punchline
+	result.Movements["punchline"] = raidengine.MovementResult{
+		Passed:      true,
+		Description: "Jokee must respond with the punchline.",
+		Message:     fmt.Sprintf("%s: %s", jokerName, jokeeName),
+		Function:    utils.CallerPath(0),
+	}
 }
