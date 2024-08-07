@@ -13,7 +13,7 @@ var (
 		Use:   "debug",
 		Short: "Run the Raid in debug mode",
 		Run: func(cmd *cobra.Command, args []string) {
-			err := raidengine.Run(RaidName, AvailableStrikes, Strikes)
+			err := raidengine.Run(RaidName, Armory)
 			if err != nil {
 				log.Fatal(err)
 			}

@@ -1,4 +1,4 @@
-package strikes
+package armory
 
 import (
 	"fmt"
@@ -11,16 +11,23 @@ import (
 	"github.com/privateerproj/privateer-sdk/utils"
 )
 
+// Conforms to the Armory interface type
 type Antijokes struct {
+	Tactics map[string][]raidengine.Strike     // Required, allows you to sort which strikes are run for each control
 	Log     hclog.Logger                       // Recommended, allows you to set the log level for each log message
 	Results map[string]raidengine.StrikeResult // Optional, allows cross referencing between strikes
 }
 
-func (a *Antijokes) SetLogger(loggerName string) {
+func (a *Antijokes) SetLogger(loggerName string) hclog.Logger {
 	a.Log = raidengine.GetLogger(loggerName, false)
+	return a.Log
 }
 
-// KnockKnock is a demo test for dev purposes
+func (a *Antijokes) GetTactics() map[string][]raidengine.Strike {
+	return a.Tactics
+}
+
+// KnockKnock conforms to the Strike function type
 func (a *Antijokes) KnockKnock() (strikeName string, result raidengine.StrikeResult) {
 	strikeName = "Knock Knock"
 	log.Print(strikeName) // Default logs will be set as INFO
@@ -56,7 +63,7 @@ func (a *Antijokes) KnockKnock() (strikeName string, result raidengine.StrikeRes
 	return
 }
 
-// ChickenCrossedRoad is a demo test for dev purposes
+// ChickenCrossedRoad conforms to the Strike function type
 func (a *Antijokes) ChickenCrossedRoad() (strikeName string, result raidengine.StrikeResult) {
 	// If a strike is part of multiple tactics, you can use a map to reference the control ID to the selected tactic
 	controlIDs := map[string]string{
@@ -109,7 +116,7 @@ func getJokerName() (result raidengine.MovementResult) {
 	return
 }
 
-// getJokerName is a common movement for the strikes in this raid
+// getJokerName is a single movement for common use by the strikes in this raid
 func getJokeeName() (result raidengine.MovementResult) {
 	result = raidengine.MovementResult{
 		Description: "JokeeName must be found in the runtime configuration.",
@@ -133,7 +140,7 @@ func RunKnockKnock(jokerName, jokeeName string, result *raidengine.StrikeResult)
 		Passed:      true,
 		Description: "Joke must be started by the joker.",
 		Message:     fmt.Sprintf("%s: Knock knock.", jokerName),
-		Function:    utils.CallerPath(0),
+		Function:    utils.CallerPath(0), // 0 logs the current function name
 	}
 	// say who's there
 	result.Movements["who's there"] = raidengine.MovementResult{

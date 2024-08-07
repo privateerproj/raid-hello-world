@@ -5,11 +5,15 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/privateerproj/privateer-pack-wireframe/strikes"
+	"github.com/privateerproj/privateer-pack-wireframe/armory"
 	"github.com/privateerproj/privateer-sdk/command"
 	"github.com/privateerproj/privateer-sdk/plugin"
 	"github.com/privateerproj/privateer-sdk/raidengine"
 )
+
+// Raid makes the correlated raidengine struct available to the plugin
+type Raid struct {
+}
 
 var (
 	// Build information is added by the Makefile at compile time
@@ -18,25 +22,12 @@ var (
 	buildTime          string
 
 	RaidName = "Wireframe" // TODO: Change this to the name of your Raid
-	Strikes  = &strikes.Antijokes{}
-
-	AvailableStrikes = map[string][]raidengine.Strike{
-		"CCC-Taxonomy": {
-			Strikes.KnockKnock,
-			Strikes.ChickenCrossedRoad,
-		},
-		"CCC-Hardening": {
-			Strikes.ChickenCrossedRoad,
-		},
-		"CIS": {
-			Strikes.ChickenCrossedRoad,
-		},
-	}
+	Armory   = &armory.Antijokes{}
 
 	// runCmd represents the base command when called without any subcommands
 	runCmd = &cobra.Command{
 		Use:   RaidName,
-		Short: "TODO: Addd a brief description of your Raid here",
+		Short: "TODO: Add a brief description of your Raid here",
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			command.InitializeConfig()
 		},
@@ -66,11 +57,20 @@ func Execute(version, commitHash, builtAt string) {
 }
 
 func init() {
-	command.SetBase(runCmd) // This initializes the base CLI functionality
-}
+	Armory.Tactics = map[string][]raidengine.Strike{
+		"CCC-Taxonomy": {
+			Armory.KnockKnock,
+			Armory.ChickenCrossedRoad,
+		},
+		"CCC-Hardening": {
+			Armory.ChickenCrossedRoad,
+		},
+		"CIS": {
+			Armory.ChickenCrossedRoad,
+		},
+	}
 
-// Raid meets the Privateer Service Pack interface
-type Raid struct {
+	command.SetBase(runCmd) // This initializes the base CLI functionality
 }
 
 // cleanupFunc is called when the plugin is stopped
@@ -83,5 +83,5 @@ func cleanupFunc() error {
 // Adding raidengine.SetupCloseHandler(cleanupFunc) will allow you to append custom cleanup behavior
 func (r *Raid) Start() error {
 	raidengine.SetupCloseHandler(cleanupFunc)
-	return raidengine.Run(RaidName, AvailableStrikes, Strikes)
+	return raidengine.Run(RaidName, Armory)
 }
