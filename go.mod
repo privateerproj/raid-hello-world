@@ -13,7 +13,7 @@ require (
 	github.com/mitchellh/go-testing-interface v1.14.1 // indirect
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
-	github.com/privateerproj/privateer-sdk v0.0.5
+	github.com/privateerproj/privateer-sdk v0.0.7
 	github.com/rogpeppe/go-internal v1.11.0 // indirect
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.15.0
@@ -27,4 +27,4 @@ require (
 )
 
 // For Development Only
-replace github.com/privateerproj/privateer-sdk => ../privateer-sdk
+// replace github.com/privateerproj/privateer-sdk => ../privateer-sdk
