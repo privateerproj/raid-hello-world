@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/privateerproj/privateer-pack-wireframe/cmd"
+	"github.com/privateerproj/privateer-pack-SVC/cmd"
 )
 
 var (

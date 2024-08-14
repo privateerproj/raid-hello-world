@@ -1,5 +1,7 @@
 loglevel: Debug
-WriteDirectory: test_output
+WriteDirectory: sample_test_output
 raids:
-  Wireframe:
-    tactic: CIS
+  SVC:
+    tactics: 
+      - CCC_OS_Taxonomy
+      - CCC_OS_Security

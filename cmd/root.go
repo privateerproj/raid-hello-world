@@ -1,11 +1,12 @@
 package cmd
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
 
-	"github.com/privateerproj/privateer-pack-wireframe/armory"
+	"github.com/privateerproj/privateer-pack-SVC/armory"
 	"github.com/privateerproj/privateer-sdk/command"
 	"github.com/privateerproj/privateer-sdk/plugin"
 	"github.com/privateerproj/privateer-sdk/raidengine"
@@ -21,13 +22,13 @@ var (
 	buildGitCommitHash string
 	buildTime          string
 
-	RaidName = "Wireframe" // TODO: Change this to the name of your Raid
-	Armory   = &armory.Antijokes{}
+	RaidName = "SVC"
+	Armory   = &armory.SVC{}
 
 	// runCmd represents the base command when called without any subcommands
 	runCmd = &cobra.Command{
 		Use:   RaidName,
-		Short: "TODO: Add a brief description of your Raid here",
+		Short: fmt.Sprintf("Test suite for %s.", RaidName),
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			command.InitializeConfig()
 		},
@@ -58,15 +59,22 @@ func Execute(version, commitHash, builtAt string) {
 
 func init() {
 	Armory.Tactics = map[string][]raidengine.Strike{
-		"CCC-Taxonomy": {
-			Armory.KnockKnock,
-			Armory.ChickenCrossedRoad,
-		},
-		"CCC-Hardening": {
-			Armory.ChickenCrossedRoad,
-		},
-		"CIS": {
-			Armory.ChickenCrossedRoad,
+		"CCC_OS_Security": {
+			Armory.CCC_OS_C1_TR01,
+			Armory.CCC_OS_C1_TR02,
+			Armory.CCC_OS_C1_TR03,
+			Armory.CCC_OS_C2_TR01,
+			Armory.CCC_OS_C2_TR02,
+			Armory.CCC_OS_C2_TR03,
+			Armory.CCC_OS_C3_TR01,
+			Armory.CCC_OS_C3_TR02,
+			Armory.CCC_OS_C3_TR03,
+			Armory.CCC_OS_C4_TR01,
+			Armory.CCC_OS_C4_TR02,
+			Armory.CCC_OS_C4_TR03,
+			Armory.CCC_OS_C5_TR01,
+			Armory.CCC_OS_C5_TR02,
+			Armory.CCC_OS_C5_TR03,
 		},
 	}
 

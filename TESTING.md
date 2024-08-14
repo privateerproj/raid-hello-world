@@ -5,7 +5,8 @@ Assumptions:
 - VS Code is used as the local IDE
 - Go built-in testing package is used
 
-# Table of Contents
+## Table of Contents
+
 - [TLDR](#tldr)
 - [Pre-requisites](#pre-requisites)
 - [Environment Setup](#environment-setup)
@@ -24,7 +25,8 @@ Assumptions:
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 
-# TLDR
+## TLDR
+
 - Read go testing docs. [See here](#pre-requisites)
 - Install *gotest* and *dlv* tools. [See here](#environment-setup)
 - To write tests:
@@ -51,7 +53,7 @@ Assumptions:
   - Open test function in VS Code and place breakpoint
   - Click *Debug test* on top of test function
 
-# Pre-requisites
+## Pre-requisites
 
 As a pre-requisite, please review the following materials to understand Go's testing appraoch and tools:
 
@@ -59,9 +61,10 @@ As a pre-requisite, please review the following materials to understand Go's tes
 - https://gobyexample.com/testing > Clear examples about Go testing
 - https://code.visualstudio.com/docs/languages/go > Details about Go extension for VS Code
 
-# Environment Setup
+## Environment Setup
 
-A simple way to install useful tools in VS Code
+A simple way to install useful tools in VS Code:
+
 - To check which tools are installed:
   - Press *Ctrl+Shift+P* to open Command Palette
   - Type *Go: Locate Configured Go Tools*
@@ -73,18 +76,21 @@ A simple way to install useful tools in VS Code
 - Restart VS Code
 
 Recommended tools from above list:
+
 - *gotest* > Generate unit tests
 - *dlv* > Enhanced Go debugging
 
-# How to write tests for packages
+## How to write tests for packages
 
-## Test files
+### Test files
+
 - For each package, a new file shall be created following this naming convention: *[packagename]_test.go*
 - Example: 
   - Package: ```utils.go```
   - Test file: ```utils_test.go```
 
-## Test functions
+### Test functions
+
 - For each function within a package, there shall be a corresponding test function following this naming convention: *func Test[FunctionName](t* **testing.T)*
 - Example:
   - Package: ```utils.go```
@@ -92,7 +98,8 @@ Recommended tools from above list:
   - Test file: ```utils_test.go```
   - Test function: ```TestReadStaticFile(t *testing.T)```
 
-## Proposed test format
+### Proposed test format
+
 Developers are free to write any code within the test function, however following a consistent structure can provide good reability, minimize communication issues among team members and ensure good coverage for all test cases.
 
 The following structure is recommended:
@@ -222,16 +229,18 @@ The following structure is recommended:
   ```
 
 
-# How to run tests locally
+## How to run tests locally
 
-## Run all tests
+### Run all tests
+
 - Navigate to project's root folder and execute ```go tests ./...```
 ```
 cd ./projectroot/
 go test -v ./...
 ```
 
-## Run all tests for a specific package
+### Run all tests for a specific package
+
 - Navigate to package folder and execute ```go test```
 
 Sample
@@ -240,7 +249,8 @@ cd ./internal/utils
 go test -v
 ```
 
-## Run a specific test for a specific function
+### Run a specific test for a specific function
+
 - Navigate to package folder and execute ```go test run <FunctionName>```
 
 Sample:
@@ -249,13 +259,14 @@ cd ./internal/utils
 go test -v -run TestReadStaticFile
 ```
 
-## Generate test coverage report locally
+### Generate test coverage report locally
+
 - Generate coverage profile ```go test ./... -coverprofile coverage.out```
 - Generate HTML report ```go tool cover -html coverage.out```
 
 *Note: Please notice the above commands will generate a local file *coverage.out* with the test coverage details. Make sure you exclude this file from your next commit as it is not needed.*
 
-# How to debug tests
+## How to debug tests
 
 During development it is very convenient to debug code execution, step into functions and check values of local variables and stack trace. This is possible in VS Code thru the use of *dlv* go package. [See above details for installing tools](#environment-setup).
 
@@ -265,7 +276,7 @@ To debug tests:
 
 See [this reference](https://code.visualstudio.com/docs/languages/go#_debugging) for more details on VS Code debugging.
 
-# How to run tests in CICD pipeline
+## How to run tests in CICD pipeline
 
 Since we are using Github Actions, the following commands shall be added to *.github/workflows/ci.yml*
 ```

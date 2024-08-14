@@ -13,7 +13,6 @@ import (
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Display version details.",
-	Long:  ``, // TODO
 	Run: func(cmd *cobra.Command, args []string) {
 		writer := tabwriter.NewWriter(os.Stdout, 1, 1, 1, ' ', 0)
 		if viper.GetBool("verbose") {
