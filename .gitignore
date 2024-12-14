@@ -263,3 +263,6 @@ wireframe-darwin
 
 # Dir may be created during dev/debugging
 main/
+
+# project overrides
+!sample_output/**.log
