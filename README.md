@@ -1,4 +1,4 @@
-# Privateer Raid SVC
+# Privateer Raid example
 
 This wireframe is designed to quickly get your service pack repository up to speed!
 

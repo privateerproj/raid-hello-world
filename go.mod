@@ -1,10 +1,9 @@
-module github.com/privateerproj/privateer-pack-SVC
+module github.com/privateerproj/privateer-raid-example
 
-go 1.20
+go 1.23
 
 require (
-	github.com/hashicorp/go-hclog v1.6.3
-	github.com/privateerproj/privateer-sdk v0.0.7
+	github.com/privateerproj/privateer-sdk v0.0.15
 	github.com/spf13/cobra v1.8.1
 	github.com/spf13/viper v1.19.0
 )
@@ -13,6 +12,7 @@ require (
 	github.com/fatih/color v1.14.1 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
+	github.com/hashicorp/go-hclog v1.6.3 // indirect
 	github.com/hashicorp/go-plugin v1.4.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/hashicorp/yamux v0.0.0-20180604194846-3520598351bb // indirect

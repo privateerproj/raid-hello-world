@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/privateerproj/privateer-pack-SVC/cmd"
+	"github.com/privateerproj/privateer-raid-example/cmd"
 )
 
 var (

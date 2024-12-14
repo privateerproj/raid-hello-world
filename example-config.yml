@@ -1,7 +1,10 @@
 loglevel: Debug
-WriteDirectory: sample_test_output
-raids:
-  SVC:
-    tactics: 
-      - CCC_OS_Taxonomy
-      - CCC_OS_Security
+write-directory: sample_output
+services:
+  my-cloud-service1:
+    raid: example
+    tactics:
+      - tlp_red
+      # - tlp_amber
+      # - tlp_green
+      # - tlp_clear
