@@ -1,12 +1,12 @@
 package armory
 
 import (
-	"github.com/privateerproj/privateer-sdk/raidengine"
+	"github.com/privateerproj/privateer-sdk/pluginkit"
 )
 
 var (
-	Armory   = raidengine.Armory{
-		Tactics: map[string][]raidengine.Strike{
+	Armory   = pluginkit.Armory{
+		TestSuites: map[string][]pluginkit.TestSet{
 		
 			"tlp_amber": {
 				CCC_C01_TR01,
@@ -18,7 +18,6 @@ var (
 				CCC_C03_TR04,
 				CCC_C03_TR05,
 				CCC_C03_TR06,
-				CCC_C04_TR01,
 				CCC_C04_TR01,
 				CCC_C04_TR02,
 				CCC_C05_TR01,
@@ -94,7 +93,6 @@ var (
 				CCC_C03_TR04,
 				CCC_C03_TR05,
 				CCC_C03_TR06,
-				CCC_C04_TR01,
 				CCC_C04_TR01,
 				CCC_C04_TR02,
 				CCC_C05_TR01,
