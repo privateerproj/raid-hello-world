@@ -39,9 +39,9 @@ var (
 	)
 )
 
-// initializer is a custom function to set up the armory for our usecase
+// initializer is a custom function to run after the config has been read
+// this could be omitted or replaced by something like armory.SetupArmory(c)
 func initializer(c *config.Config) (err error) {
-	armory.SetupArmory(c)
 	return
 }
 
