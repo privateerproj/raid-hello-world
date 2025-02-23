@@ -47,11 +47,11 @@ func ExampleTestSet01() (testSetName string, result pluginkit.TestSetResult) {
 }
 
 // ExampleTest0101 does not apply a change to the system
-func ExampleTest0101() (moveResult pluginkit.TestResult) {
+func ExampleTest0101() (testResult pluginkit.TestResult) {
 	// Pretend we're making some API call or other logic to determine if the test is applicable
 	customLogicResults := true
 
-	moveResult = pluginkit.TestResult{
+	testResult = pluginkit.TestResult{
 		Description: "Making an API call to see if HTTPS is enforced.",
 		Function:    utils.CallerPath(0), // This allows interested users to jump directly to the code that is executing this test
 		Passed:      customLogicResults,
@@ -61,7 +61,7 @@ func ExampleTest0101() (moveResult pluginkit.TestResult) {
 
 // ExampleTest0102 applies an invasive change to the system. Not all changes are invasive, but this one is.
 // Use ExecuteInvasiveTest() to ensure it is run only when the user has opted in to potentially destructive changes.
-func ExampleTest0102() (moveResult pluginkit.TestResult) {
+func ExampleTest0102() (testResult pluginkit.TestResult) {
 	// The functions here can be defined whereever you like
 	// If you have a lot of changes or plan to reuse them, you may want to put them in a separate file
 	change1 := pluginkit.NewChange(
@@ -84,7 +84,7 @@ func ExampleTest0102() (moveResult pluginkit.TestResult) {
 	change1.Revert()
 
 	// Note that we are not setting Passed to true or false. That will be determined by ExecuteTest() or ExecuteInvasiveTest()
-	moveResult = pluginkit.TestResult{
+	testResult = pluginkit.TestResult{
 		Description: "Making an API call to see if HTTPS is enforced.",
 		Function:    utils.CallerPath(0), // This allows interested users to jump directly to the code that is executing this test
 		Changes: map[string]*pluginkit.Change{

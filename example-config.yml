@@ -1,8 +1,10 @@
 loglevel: Debug
 write-directory: test_output
+write: true
+output: yaml
 services:
   my-cloud-service1:
-    plugin: example
+    plugin: example-plugin
     test-suites:
       - tlp_red
       # - tlp_amber
