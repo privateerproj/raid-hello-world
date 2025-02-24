@@ -1,4 +1,4 @@
-# Privateer Plugin example
+# Privateer Plugin example-plugin
 
 This wireframe is designed to quickly get your service pack repository up to speed!
 

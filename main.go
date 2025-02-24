@@ -3,7 +3,12 @@ package main
 import (
 	"fmt"
 
-	"github.com/privateerproj/privateer-plugin-example/cmd"
+	"os"
+
+	"github.com/privateerproj/privateer-plugin-example-plugin/armory"
+
+	"github.com/privateerproj/privateer-sdk/command"
+	"github.com/privateerproj/privateer-sdk/config"
 )
 
 var (
@@ -15,11 +20,38 @@ var (
 	GitCommitHash = ""
 	// BuiltAt is the actual build datetime
 	BuiltAt = ""
+
+	PluginName   = "example-plugin"
+	RequiredVars = []string{
+		"your",
+		"required",
+		"variables",
+	}
+
+	runCmd = command.NewPluginCommands(
+		PluginName,
+		Version,
+		VersionPostfix,
+		GitCommitHash,
+		&armory.Armory,
+		initializer,
+		RequiredVars,
+	)
 )
+
+// initializer is a custom function to run after the config has been read
+// this could be omitted or replaced by something like armory.SetupArmory(c)
+func initializer(c *config.Config) (err error) {
+	return
+}
 
 func main() {
 	if VersionPostfix != "" {
 		Version = fmt.Sprintf("%s-%s", Version, VersionPostfix)
 	}
-	cmd.Execute(Version, GitCommitHash, BuiltAt)
+
+	err := runCmd.Execute()
+	if err != nil {
+		os.Exit(1)
+	}
 }
