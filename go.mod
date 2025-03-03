@@ -1,8 +1,11 @@
-module github.com/privateerproj/privateer-plugin-example-plugin // Replace this globally with your module name
+module plugin-example-plugin // Replace this globally with your module name
 
-go 1.23
+go 1.23.4
 
-require github.com/privateerproj/privateer-sdk v0.7.0
+require (
+	github.com/privateerproj/privateer-sdk v1.0.0
+	github.com/revanite-io/sci v0.1.7
+)
 
 require (
 	github.com/fatih/color v1.14.1 // indirect
@@ -41,5 +44,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-// Uncomment if you're working locally on a privateer SDK improvement
+// Uncomment if you're working on a dependency locally
 // replace github.com/privateerproj/privateer-sdk => ../../privateer-sdk
+
+// replace github.com/revanite-io/sci => ../sci
