@@ -1,0 +1,194 @@
+service_name: your-service
+plugin_name: example-plugin
+payload:
+    data: {}
+evaluation_suites:
+    - name: your-service_FINOS_CCC
+      catalog_id: FINOS_CCC
+      start_time: 2025-03-03 15:20:08.589133 -0600 CST m=+0.004983793
+      end_time: 2025-03-03 15:20:08.589679 -0600 CST m=+0.005529793
+      result: Passed
+      corrupted_state: false
+      control_evaluations:
+        - name: ""
+          control_id: CCC.C01
+          result: Passed
+          message: Your data is here
+          corrupted_state: false
+          remediation_guide: ""
+          assessments:
+            - requirement_id: CCC.C01.TR01
+              applicability:
+                - tlp_clear
+                - tlp_green
+                - tlp_amber
+                - tlp_red
+              description: When a port is exposed for non-SSH network traffic, all traffic MUST include a TLS handshake AND be encrypted using TLS 1.2 or higher.
+              result: Passed
+              message: Your data is here
+              steps:
+                - plugin-example-plugin/evaluations.reusable_step_example
+              steps_executed: 1
+              run_duration: 12.125µs
+              value: null
+              changes: {}
+            - requirement_id: CCC.C01.TR02
+              applicability:
+                - tlp_clear
+                - tlp_green
+                - tlp_amber
+                - tlp_red
+              description: When a port is exposed for SSH network traffic, all traffic MUST include a SSH handshake AND be encrypted using SSHv2 or higher.
+              result: Passed
+              message: Your data is here
+              steps:
+                - plugin-example-plugin/evaluations.reusable_step_example
+              steps_executed: 1
+              run_duration: 291ns
+              value: null
+              changes: {}
+        - name: ""
+          control_id: CCC.C06
+          result: Passed
+          message: Your data is here
+          corrupted_state: false
+          remediation_guide: ""
+          assessments:
+            - requirement_id: CCC.C06.TR01
+              applicability:
+                - tlp_clear
+                - tlp_green
+                - tlp_amber
+                - tlp_red
+              description: When a deployment request is made, the service MUST validate that the deployment region is not to a restricted or regions or availability zones.
+              result: Passed
+              message: Your data is here
+              steps:
+                - plugin-example-plugin/evaluations.reusable_step_example
+              steps_executed: 1
+              run_duration: 417ns
+              value: null
+              changes: {}
+            - requirement_id: CCC.C06.TR02
+              applicability:
+                - tlp_clear
+                - tlp_green
+                - tlp_amber
+                - tlp_red
+              description: When a deployment request is made, the service MUST validate that replication of data, backups, and disaster recovery operations will not occur in restricted regions or availability zones.
+              result: Passed
+              message: Your data is here
+              steps:
+                - plugin-example-plugin/evaluations.reusable_step_example
+              steps_executed: 1
+              run_duration: 167ns
+              value: null
+              changes: {}
+        - name: ""
+          control_id: CCC.C08
+          result: Passed
+          message: Your data is here
+          corrupted_state: false
+          remediation_guide: ""
+          assessments:
+            - requirement_id: CCC.C08.TR01
+              applicability:
+                - tlp_green
+                - tlp_amber
+                - tlp_red
+              description: When data is stored, the service MUST ensure that data is replicated across multiple availability zones or regions.
+              result: Passed
+              message: Your data is here
+              steps:
+                - plugin-example-plugin/evaluations.reusable_step_example
+              steps_executed: 1
+              run_duration: 375ns
+              value: null
+              changes: {}
+            - requirement_id: CCC.C08.TR02
+              applicability:
+                - tlp_green
+                - tlp_amber
+                - tlp_red
+              description: When data is replicated across multiple zones or regions, the service MUST be able to verify the replication state, including the replication locations and data synchronization status.
+              result: Passed
+              message: Your data is here
+              steps:
+                - plugin-example-plugin/evaluations.reusable_step_example
+              steps_executed: 1
+              run_duration: 125ns
+              value: null
+              changes: {}
+        - name: ""
+          control_id: CCC.C09
+          result: Passed
+          message: Your data is here
+          corrupted_state: false
+          remediation_guide: ""
+          assessments:
+            - requirement_id: CCC.C09.TR01
+              applicability:
+                - tlp_amber
+                - tlp_red
+                - tlp_green
+                - tlp_clear
+              description: When access logs are stored, the service MUST ensure that access logs cannot be accessed without proper authorization.
+              result: Passed
+              message: Your data is here
+              steps:
+                - plugin-example-plugin/evaluations.reusable_step_example
+              steps_executed: 1
+              run_duration: 292ns
+              value: null
+              changes: {}
+            - requirement_id: CCC.C09.TR02
+              applicability:
+                - tlp_amber
+                - tlp_red
+                - tlp_green
+                - tlp_clear
+              description: When access logs are stored, the service MUST ensure that access logs cannot be modified without proper authorization.
+              result: Passed
+              message: Your data is here
+              steps:
+                - plugin-example-plugin/evaluations.reusable_step_example
+              steps_executed: 1
+              run_duration: 167ns
+              value: null
+              changes: {}
+            - requirement_id: CCC.C09.TR03
+              applicability:
+                - tlp_amber
+                - tlp_red
+                - tlp_green
+                - tlp_clear
+              description: When access logs are stored, the service MUST ensure that access logs cannot be deleted without proper authorization.
+              result: Passed
+              message: Your data is here
+              steps:
+                - plugin-example-plugin/evaluations.reusable_step_example
+              steps_executed: 1
+              run_duration: 125ns
+              value: null
+              changes: {}
+        - name: ""
+          control_id: CCC.C10
+          result: Passed
+          message: Your data is here
+          corrupted_state: false
+          remediation_guide: ""
+          assessments:
+            - requirement_id: CCC.C10.TR01
+              applicability:
+                - tlp_green
+                - tlp_amber
+                - tlp_red
+              description: When data is replicated, the service MUST ensure that replication is restricted to explicitly trusted destinations.
+              result: Passed
+              message: Your data is here
+              steps:
+                - plugin-example-plugin/evaluations.reusable_step_example
+              steps_executed: 1
+              run_duration: 334ns
+              value: null
+              changes: {}
