@@ -5,10 +5,10 @@ import (
 
 	"os"
 
-	"github.com/privateerproj/privateer-plugin-example-plugin/armory"
+	"plugin-example-plugin/evaluations"
 
 	"github.com/privateerproj/privateer-sdk/command"
-	"github.com/privateerproj/privateer-sdk/config"
+	"github.com/privateerproj/privateer-sdk/pluginkit"
 )
 
 var (
@@ -28,27 +28,26 @@ var (
 		"variables",
 	}
 
-	runCmd = command.NewPluginCommands(
-		PluginName,
-		Version,
-		VersionPostfix,
-		GitCommitHash,
-		&armory.Armory,
-		initializer,
-		RequiredVars,
-	)
 )
-
-// initializer is a custom function to run after the config has been read
-// this could be omitted or replaced by something like armory.SetupArmory(c)
-func initializer(c *config.Config) (err error) {
-	return
-}
 
 func main() {
 	if VersionPostfix != "" {
 		Version = fmt.Sprintf("%s-%s", Version, VersionPostfix)
 	}
+
+	// NewVessel may take a payload for all suites to reference
+	pvtrVessel := pluginkit.NewVessel(PluginName, evaluations.LoadData(), RequiredVars)
+
+	// Evaluation Suite may optionally take a payload to selectively override the data specified in NewVessel
+	pvtrVessel.AddEvaluationSuite("FINOS_CCC", nil, evaluations.FINOS_CCC)
+
+	runCmd := command.NewPluginCommands(
+		PluginName,
+		Version,
+		VersionPostfix,
+		GitCommitHash,
+		pvtrVessel,
+	)
 
 	err := runCmd.Execute()
 	if err != nil {
